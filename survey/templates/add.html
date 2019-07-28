@@ -32,6 +32,15 @@
 		<title>123</title>
 
 		<script>
+			// data=[
+			// 	{type:(题目类型,1单选, 2多选,3填空),name:(题目名),options:[](选项内容,填空题则为空)},
+			// 	{type:1,name:"sb110",options:["单选1","单选2"]},
+			// 	{type:2,name:"sb111",options:["单选1","单选2"]},
+			// 	{type:3,name:"sb112",options:[]},
+			// 	]
+			var data=[]
+			var paperName=""
+			var paperDetail=""	
 			//初始化
 			$(function() {
 				//顶部导航栏动态样式
@@ -44,8 +53,46 @@
 				});
 				setQuestionNumber()
 				initDragPanel()
+				
+				
 			})
-			
+			function initJson(){
+			    data=[]
+				var count=1
+                paperName=$("[name=title]").text()
+                paperDetail=$("[name=detail]").text()
+				$(".panel.panel-primary").each(function(){
+					var question={
+						no:0,
+						type:0,
+						questionName:"",
+						option:[],
+						ismustfill:1,
+					}
+
+					if ($(this).find('.form-check-input').is(":checked")) {
+							question.ismustfill=0
+					}
+					question.no=$(this).find(".panel-title").find("text").eq(0).text()
+					count+=1
+					switch($(this).find(".panel-title").find("text").eq(1).text()){
+						case ".单选":
+							question.type="单选"
+							break
+						case ".多选":
+							question.type="多选"
+							break
+						case ".填空":
+							question.type="自由"
+							break
+					} 
+					question.questionName=$(this).find(".panel-body").find("h4").eq(0).text()
+					$(this).find(".panel-body").find("div").each(function(){
+						question.option[question.option.length]=$(this).find("h4").text()
+					})
+					data.push(question)
+				});
+			}
 			function initDragPanel()
 			{
 				var panelList = $('#draggablePanelList');
@@ -81,6 +128,7 @@
 			
 			//添加单选
 			function addSingle() {
+				console.log(data)
 				$("#draggablePanelList").append('<div class="row clearfix">\n' +
                     '\t\t\t\t<div class="col-md-12 column">\n' +
                     '\t\t\t\t\t<div class="panel panel-primary">\n' +
@@ -297,7 +345,10 @@
 				}
 				else
                 {
-            post("success/",  {username:'sb110'});
+					initJson()
+					console.log(data)
+                    postJson()
+					//post("success/",  {username:'sb110'});
 					
 				}
 			}
@@ -328,6 +379,24 @@
     continue;
   }
 }
+
+  function postJson(){
+        console.log({paperName:paperName,paperDetail:paperDetail, questions:JSON.stringify(data)})
+	   $.ajax({
+        url: 'success/',
+        type:'post',
+        dataType:'json',
+        traditional:true,//这个参数必须添加，采用传统方式转换
+        data : {paperName:paperName,paperDetail:paperDetail, questions:JSON.stringify(data)},
+        success:function (result) {
+            if(result.resultCode == 0) {
+                alert("成功")
+            }else{
+                alert("失败")
+            }
+        }
+    });
+  }
 		</script>
 	</head>
 	<body id="body">
