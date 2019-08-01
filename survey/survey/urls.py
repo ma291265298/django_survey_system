@@ -19,7 +19,6 @@ from django.urls import path,re_path
 from survey import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('',views.addView),
     path('add/', views.addView),
     path('success/', views.addSuccess),

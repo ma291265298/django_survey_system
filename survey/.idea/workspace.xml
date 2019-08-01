@@ -2,12 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="29f7ca4c-9bed-4400-a236-ba259c63bc2e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/login/auth.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/login/auth.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/login/sb.JPG" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/survey/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/survey/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/survey/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/survey/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/survey/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/survey/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/survey/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/survey/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/add.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/add.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,11 +18,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/survey/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="109">
-              <caret line="12" column="24" selection-start-line="12" selection-start-column="24" selection-end-line="12" selection-end-column="24" />
+            <state relative-caret-position="176">
+              <caret line="8" column="33" selection-start-line="8" selection-start-column="33" selection-end-line="8" selection-end-column="33" />
               <folding>
                 <element signature="e#0#36#0" expanded="true" />
               </folding>
@@ -30,10 +31,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/survey/models.py">
+        <entry file="file://$PROJECT_DIR$/survey/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-194">
-              <caret line="75" column="64" lean-forward="true" selection-start-line="75" selection-start-column="64" selection-end-line="75" selection-end-column="64" />
+            <state relative-caret-position="584">
+              <caret line="129" column="22" selection-start-line="129" selection-start-column="22" selection-end-line="129" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -41,8 +42,65 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/add.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="337">
-              <caret line="565" lean-forward="true" selection-start-line="565" selection-end-line="565" />
+            <state relative-caret-position="487">
+              <caret line="418" column="14" selection-start-line="418" selection-start-column="14" selection-end-line="418" selection-end-column="14" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="154">
+              <caret line="7" column="5" selection-start-line="7" selection-start-column="5" selection-end-line="7" selection-end-column="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/survey/urls.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="440">
+              <caret line="20" column="15" lean-forward="true" selection-start-line="20" selection-start-column="15" selection-end-line="20" selection-end-column="15" />
+              <folding>
+                <element signature="e#630#662#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/login.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="659">
+              <caret line="39" column="42" selection-start-line="39" selection-start-column="42" selection-end-line="39" selection-end-column="42" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/static/login/auth.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1412">
+              <caret line="118" column="9" lean-forward="true" selection-start-line="118" selection-start-column="9" selection-end-line="118" selection-end-column="9" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/login/auth.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="14">
+              <caret line="115" column="12" lean-forward="true" selection-start-line="115" selection-start-column="12" selection-end-line="115" selection-end-column="12" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/success.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="66">
+              <caret line="3" column="4" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -61,6 +119,8 @@
     <findStrings>
       <find>detail</find>
       <find>checkBlur</find>
+      <find>forgot</find>
+      <find>lowin-w</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -71,7 +131,6 @@
       <list>
         <option value="$PROJECT_DIR$/templates/index.html" />
         <option value="$PROJECT_DIR$/templates/404.html" />
-        <option value="$PROJECT_DIR$/survey/urls.py" />
         <option value="$PROJECT_DIR$/templates/success.html" />
         <option value="$PROJECT_DIR$/survey/__init__.py" />
         <option value="/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/db/backends/mysql/base.py" />
@@ -79,13 +138,16 @@
         <option value="$PROJECT_DIR$/models.py" />
         <option value="$PROJECT_DIR$/survey/settings.py" />
         <option value="$PROJECT_DIR$/templates/add.html" />
+        <option value="$PROJECT_DIR$/survey/urls.py" />
         <option value="$PROJECT_DIR$/survey/views.py" />
+        <option value="$PROJECT_DIR$/templates/login.html" />
+        <option value="$PROJECT_DIR$/static/login/auth.js" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="72" />
-    <option name="y" value="23" />
+    <option name="x" value="69" />
+    <option name="y" value="118" />
     <option name="width" value="1395" />
     <option name="height" value="877" />
   </component>
@@ -95,13 +157,23 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="survey" type="b2602c69:ProjectViewProjectNode" />
               <item name="survey" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="survey" type="b2602c69:ProjectViewProjectNode" />
+              <item name="survey" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="survey" type="b2602c69:ProjectViewProjectNode" />
+              <item name="survey" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="login" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="survey" type="b2602c69:ProjectViewProjectNode" />
@@ -117,24 +189,27 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/static/sb" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/templates" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/templates" />
+      <recent name="$PROJECT_DIR$/static/login" />
+      <recent name="$PROJECT_DIR$/static/sb" />
+      <recent name="$PROJECT_DIR$/static" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/survey" />
       <recent name="$PROJECT_DIR$/static/sb" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/static/sb" />
-      <recent name="$PROJECT_DIR$/static" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -191,23 +266,32 @@
       <workItem from="1563690737676" duration="5841000" />
       <workItem from="1563703447065" duration="1684000" />
       <workItem from="1564220354793" duration="8913000" />
-      <workItem from="1564290563037" duration="5687000" />
+      <workItem from="1564290563037" duration="7127000" />
+      <workItem from="1564647435087" duration="5412000" />
     </task>
+    <task id="LOCAL-00001" summary="use sql orm for adding paper,question,option finished!">
+      <created>1564298635424</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1564298635424</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="23485000" />
+    <option name="totallyTimeSpent" value="30337000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="46" y="23" width="1395" height="877" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18033999" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18255728" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.34267515" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.17579618" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -228,6 +312,10 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="use sql orm for adding paper,question,option finished!" />
+    <option name="LAST_COMMIT_MESSAGE" value="use sql orm for adding paper,question,option finished!" />
+  </component>
   <component name="XDebuggerManager">
     <watches-manager>
       <configuration name="Python.DjangoServer">
@@ -241,13 +329,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
           <caret line="9" column="7" selection-start-line="9" selection-start-column="7" selection-end-line="9" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/success.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="12" column="45" selection-start-line="12" selection-start-column="45" selection-end-line="12" selection-end-column="45" />
         </state>
       </provider>
     </entry>
@@ -286,10 +367,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/survey/wsgi.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/survey/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="22">
+          <caret line="75" column="64" selection-start-line="75" selection-start-column="64" selection-end-line="75" selection-end-column="64" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/survey/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="393">
-          <caret line="39" column="13" selection-start-line="39" selection-start-column="13" selection-end-line="39" selection-end-column="13" />
+        <state relative-caret-position="584">
+          <caret line="129" column="22" selection-start-line="129" selection-start-column="22" selection-end-line="129" selection-end-column="22" />
         </state>
       </provider>
     </entry>
@@ -302,38 +393,63 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/survey/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="407">
-          <caret line="27" selection-start-line="27" selection-end-line="27" />
+        <state relative-caret-position="440">
+          <caret line="20" column="15" lean-forward="true" selection-start-line="20" selection-start-column="15" selection-end-line="20" selection-end-column="15" />
           <folding>
             <element signature="e#630#662#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/survey/wsgi.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/survey/models.py">
+    <entry file="file://$PROJECT_DIR$/survey/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-194">
-          <caret line="75" column="64" lean-forward="true" selection-start-line="75" selection-start-column="64" selection-end-line="75" selection-end-column="64" />
+        <state relative-caret-position="176">
+          <caret line="8" column="33" selection-start-line="8" selection-start-column="33" selection-end-line="8" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#36#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/add.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="337">
-          <caret line="565" lean-forward="true" selection-start-line="565" selection-end-line="565" />
+        <state relative-caret-position="487">
+          <caret line="418" column="14" selection-start-line="418" selection-start-column="14" selection-end-line="418" selection-end-column="14" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/survey/views.py">
+    <entry file="file://$PROJECT_DIR$/templates/success.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="109">
-          <caret line="12" column="24" selection-start-line="12" selection-start-column="24" selection-end-line="12" selection-end-column="24" />
-          <folding>
-            <element signature="e#0#36#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="66">
+          <caret line="3" column="4" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/login/auth.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="14">
+          <caret line="115" column="12" lean-forward="true" selection-start-line="115" selection-start-column="12" selection-end-line="115" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.dom.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="2658" column="4" selection-start-line="2658" selection-start-column="4" selection-end-line="2658" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/login.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="659">
+          <caret line="39" column="42" selection-start-line="39" selection-start-column="42" selection-end-line="39" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/login/auth.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1412">
+          <caret line="118" column="9" lean-forward="true" selection-start-line="118" selection-start-column="9" selection-end-line="118" selection-end-column="9" />
         </state>
       </provider>
     </entry>

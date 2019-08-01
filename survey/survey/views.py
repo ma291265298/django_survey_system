@@ -6,7 +6,7 @@ from survey.models import *
 
 
 def addView(request):
-    return render(request, "add.html")
+    return render(request, "login.html")
 def erro(request):
     return render(request, "404.html")
 
