@@ -22,5 +22,6 @@ urlpatterns = [
     path('',views.addView),
     path('add/', views.addView),
     path('success/', views.addSuccess),
+    path('firstRegister/', views.sendRegisterEmail),
     #re_path(r'/*',views.erro),
 ]
