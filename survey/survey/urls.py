@@ -23,5 +23,11 @@ urlpatterns = [
     path('add/', views.addView),
     path('success/', views.addSuccess),
     path('firstRegister/', views.sendRegisterEmail),
+    path('nameCheck/', views.nameCheck),
+    path('emailCheck/', views.emailCheck),
+    path('loginAction/', views.loginAction),
+
+    re_path(r'^a/AkdjrEkclaoq/(.*)', views.secondRegister),
+    re_path(r'/*', views.erro),
     #re_path(r'/*',views.erro),
 ]
