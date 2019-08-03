@@ -1,22 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="29f7ca4c-9bed-4400-a236-ba259c63bc2e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/first_private_key.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/second_private_key.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/second_public_key.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/registerDumplicate.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/registerSuccess.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pycache/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../pycache/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pycache/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/../pycache/test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/login/auth.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/login/auth.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/login/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/login/auth.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/survey/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/survey/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/survey/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/survey/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/survey/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
-    </list>
+    <list default="true" id="29f7ca4c-9bed-4400-a236-ba259c63bc2e" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +47,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/static/login/auth.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="131">
+            <state relative-caret-position="205">
               <caret line="525" column="9" lean-forward="true" selection-start-line="525" selection-start-column="9" selection-end-line="525" selection-end-column="9" />
               <folding>
                 <element signature="e#5#69#0" />
@@ -298,7 +283,7 @@
       <workItem from="1564647435087" duration="6147000" />
       <workItem from="1564707104633" duration="17161000" />
       <workItem from="1564756072455" duration="2067000" />
-      <workItem from="1564793758945" duration="20835000" />
+      <workItem from="1564793758945" duration="21004000" />
     </task>
     <task id="LOCAL-00001" summary="use sql orm for adding paper,question,option finished!">
       <created>1564298635424</created>
@@ -328,22 +313,28 @@
       <option name="project" value="LOCAL" />
       <updated>1564757435478</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="completed login and register">
+      <created>1564836704264</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1564836704264</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="71135000" />
+    <option name="totallyTimeSpent" value="71304000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18311875" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49963045" visible="true" weight="0.08915663" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49963045" weight="0.08915663" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -368,7 +359,8 @@
     <MESSAGE value="use sql orm for adding paper,question,option finished!" />
     <MESSAGE value="finished the login and sign up page" />
     <MESSAGE value="add rsa to register" />
-    <option name="LAST_COMMIT_MESSAGE" value="add rsa to register" />
+    <MESSAGE value="completed login and register" />
+    <option name="LAST_COMMIT_MESSAGE" value="completed login and register" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -583,7 +575,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/static/login/auth.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="131">
+        <state relative-caret-position="205">
           <caret line="525" column="9" lean-forward="true" selection-start-line="525" selection-start-column="9" selection-end-line="525" selection-end-column="9" />
           <folding>
             <element signature="e#5#69#0" />
