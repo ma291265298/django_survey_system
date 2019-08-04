@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{% static 'login/auth.css' %}">
 </head>
 
-<body>
+<body id="body" style="display: none">
 <div id="test" class="alert alert-info fade show" style="display: none">
     <strong>注册信息已收到!  请查收寄件人为5724924@qq.com的邮件, 按邮件内提示激活, 若未收到邮件, 请检查垃圾箱或重新注册</strong>
 </div>
@@ -88,22 +88,10 @@
     </footer>
 </div>
 
-<script src="{% static 'login/auth.js' %}"></script>
-<script>
-
-    Auth.init({
-        login_url: '#login',
-        forgot_url: '#forgot'
-    });
-
-
-</script>
-
 <script src="https://cdn.bootcss.com/jsencrypt/3.0.0-beta.1/jsencrypt.js"></script>
 <script src="https://cdn.bootcss.com/blueimp-md5/2.11.0/js/md5.js"></script>
 <script type="text/javascript">
-       var sb=md5("123dafd");
-       console.log(sb)
+
 </script>
 <!-- 新 Bootstrap4 核心 CSS 文件 -->
 <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
@@ -116,6 +104,18 @@
 
 <!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
 <script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
+<script src="{% static 'login/auth.js' %}"></script>
+<script>
+$("#body").fadeIn("slow")
+    Auth.init({
+        login_url: '#login',
+        forgot_url: '#forgot'
+    });
+
+
+
+</script>
+
 
 </body>
 </html>

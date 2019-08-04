@@ -11,6 +11,7 @@ var Auth = {
         login_btn: document.querySelector('.login-btn'),
         register_link: document.querySelector('.register-link'),
         register_btn: document.querySelector('#register'),
+        body: document.querySelector('#body'),
         password_group: document.querySelector('.password-group'),
         password_group_height: 0,
         lowin_register: document.querySelector('.lowin-register'),
@@ -256,7 +257,7 @@ var Auth = {
                 async: false,
                 success: function (result) {
                     if (result.resultCode == 0) {
-                        alert("登录成功")
+                        $(Auth.vars.body).fadeOut('slow')
                     } else {
                         $(Auth.vars.login_erro).find("label").text("用户名/密码错误").css("color", "lightpink");
                         $(Auth.vars.login_erro).slideDown("normal")
@@ -265,6 +266,7 @@ var Auth = {
             });
     },
     init(option) {
+
         Auth.setHeight(Auth.vars.box[0].offsetHeight + Auth.vars.lowin_footer.offsetHeight);
 
         Auth.vars.password_group.style.height = Auth.vars.password_group.offsetHeight + 'px';
