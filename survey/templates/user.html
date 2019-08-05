@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+	<script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+	<style type="text/css">
+		/* 导航栏样式 */
+		#top {
+			padding-top: 10px;
+			padding-bottom: 10px;
+			padding-right: 10px;
+			padding-left: 10px;
+			background-color: #fff;
+			position: fixed;
+			top: 0;
+			width: 100%;
+			/* 顶端固定 */
+			z-index: 100;
+		}
+
+		#draggablePanelList .panel-heading {
+			cursor: move;
+		}
+
+		input::-ms-input-placeholder {
+			text-align: center;
+		}
+
+		input::-webkit-input-placeholder {
+			text-align: center;
+		}
+	</style>　
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- 引入 Bootstrap -->
+		<!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"> -->
+		<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
+		<title></title>
+	</head>
+
+	<body id="body" style="display: none">
+		<div id="top">
+			<div class="container-fluid">
+				<div class="row">
+					<input type="text" class="form-control col-8 col-md-10" placeholder="搜索问卷" />
+					<button class="btn btn-outline-success col-4 col-md-2" onclick="add()">
+
+						新建</button>
+
+				</div>
+			</div>
+
+
+
+		</div>
+
+		<div class="container-fluid" id="container">
+			<div class="row">
+                {% for i in papers.all %}
+				<div class="card bg-light col-md-6" style="margin-bottom: 10px; box-shadow: lightgray 0px 3px 5px 0px ;">
+
+					<div class="card-body">
+
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col-9" style="border:2px solid #ccc; border-top:none;border-bottom:none;border-left:none; ">
+									<h5>{{ i.name }}</h5>
+
+									<h6 style="color: lightgrey">
+										<text>•</text>
+										<text>未发布</text>
+									</h6>
+
+
+								</div>
+								<div class="col-3" style="text-align: center;">
+
+									<h3>0</h3>
+									<h6 style="font-size:15px;">答卷人数</h6>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card-footer" style="background: #F8F9FA;">
+						<div class="btn-group btn-group-sm">
+							<button type="button" class="btn btn-outline-primary">发布</button>
+							<button type="button" class="btn btn-outline-primary">编辑</button>
+							<button type="button" class="btn btn-outline-primary">分享</button>
+							<button type="button" class="btn btn-outline-primary">统计</button>
+						</div>
+						<button type="button" class="btn btn-outline-danger btn-sm" style="float: right;">删除</button>
+					</div>
+				</div>
+                {% endfor %}
+			</div>
+		</div>
+
+
+
+		<script>
+			$("#body").fadeIn('fast')
+			$(function() {
+				//顶部导航栏动态样式
+				$("#container").css('padding-top', $("#top").height());
+				var startPos = $("#container").offset().top;
+				$.event.add(window, "scroll", function() {
+					var p = $(window).scrollTop();
+					$("#top").css('box-shadow', ((p) > startPos) ? '0 0 5px #888' : '0 0 0 #888');
+
+				});
+				setQuestionNumber()
+				initDragPanel()
+
+
+			})
+
+			function add() {
+				$("#body").fadeOut("fast")
+				window.setTimeout(function() {
+				    $("#body").fadeIn("fast")
+					window.location.href="/add/"
+				}, 300);
+			}
+		</script>
+	</body>
+</html>
