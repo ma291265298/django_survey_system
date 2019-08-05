@@ -19,14 +19,14 @@ from django.urls import path,re_path
 from survey import views
 
 urlpatterns = [
-    path('',views.addView),
+    path('',views.index),
     path('add/', views.addView),
     path('success/', views.addSuccess),
     path('firstRegister/', views.sendRegisterEmail),
     path('nameCheck/', views.nameCheck),
     path('emailCheck/', views.emailCheck),
     path('loginAction/', views.loginAction),
-
+    path('user/', views.user),
     re_path(r'^a/AkdjrEkclaoq/(.*)', views.secondRegister),
     re_path(r'/*', views.erro),
     #re_path(r'/*',views.erro),

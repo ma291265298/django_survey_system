@@ -58,7 +58,7 @@ var Auth = {
         encrypt.setPublicKey('-----BEGIN PUBLIC KEY-----' + Auth.vars.PUBLIC_KEY + '-----END PUBLIC KEY-----');
         var m = encrypt.encrypt(c);
         $.ajax({
-            url: 'firstRegister/',
+            url: '/firstRegister/',
             type: 'post',
             dataType: 'json',
             traditional: true,//这个参数必须添加，采用传统方式转换
@@ -168,7 +168,7 @@ var Auth = {
         }
 
         $.ajax({
-            url: 'nameCheck/',
+            url: '/nameCheck/',
             type: 'post',
             dataType: 'json',
             traditional: true,//这个参数必须添加，采用传统方式转换
@@ -194,7 +194,7 @@ var Auth = {
         var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$"); //正则表达式
         if (reg.test($(inputObj).val())) {
             $.ajax({
-                url: 'emailCheck/',
+                url: '/emailCheck/',
                 type: 'post',
                 dataType: 'json',
                 traditional: true,//这个参数必须添加，采用传统方式转换
@@ -249,7 +249,7 @@ var Auth = {
         }
 
         $.ajax({
-                url: 'loginAction/',
+                url: '/loginAction/',
                 type: 'post',
                 dataType: 'json',
                 traditional: true,//这个参数必须添加，采用传统方式转换
@@ -257,7 +257,13 @@ var Auth = {
                 async: false,
                 success: function (result) {
                     if (result.resultCode == 0) {
-                        $(Auth.vars.body).fadeOut('slow')
+                        $(Auth.vars.body).fadeOut('fast')
+
+
+                    window.setTimeout(function() {
+                        $(Auth.vars.body).fadeIn('fast')
+					    window.location.href="/user/"
+				}, 300);
                     } else {
                         $(Auth.vars.login_erro).find("label").text("用户名/密码错误").css("color", "lightpink");
                         $(Auth.vars.login_erro).slideDown("normal")
