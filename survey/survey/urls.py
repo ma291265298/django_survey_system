@@ -26,8 +26,9 @@ urlpatterns = [
     path('nameCheck/', views.nameCheck),
     path('emailCheck/', views.emailCheck),
     path('loginAction/', views.loginAction),
-    path('user/', views.user),
+    path('user/', views.userView),
     re_path(r'^a/AkdjrEkclaoq/(.*)', views.secondRegister),
-    re_path(r'/*', views.erro),
+    re_path(r'^modify/(.*)', views.modifyView),
+    #re_path(r'/*', views.erro),
     #re_path(r'/*',views.erro),
 ]

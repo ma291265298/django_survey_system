@@ -55,7 +55,7 @@
 
 		<div class="container-fluid" id="container">
 			<div class="row">
-                {% for i in papers.all %}
+                {% for i,j in papers %}
 				<div class="card bg-light col-md-6" style="margin-bottom: 10px; box-shadow: lightgray 0px 3px 5px 0px ;">
 
 					<div class="card-body">
@@ -83,7 +83,7 @@
 					<div class="card-footer" style="background: #F8F9FA;">
 						<div class="btn-group btn-group-sm">
 							<button type="button" class="btn btn-outline-primary">发布</button>
-							<button type="button" class="btn btn-outline-primary">编辑</button>
+							<button type="button" class="btn btn-outline-primary" onclick="location.href='/modify/{{ j }}'">编辑</button>
 							<button type="button" class="btn btn-outline-primary">分享</button>
 							<button type="button" class="btn btn-outline-primary">统计</button>
 						</div>

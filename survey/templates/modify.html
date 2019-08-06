@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style type="text/css">
+        /* 导航栏样式 */
+        #top {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            padding-right: 10px;
+            padding-left: 10px;
+            background-color: #fff;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            /* 顶端固定 */
+            z-index: 100;
+        }
+
+        #draggablePanelList .panel-heading {
+            cursor: move;
+        }
+
+    </style>
+    　
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,
+                                     initial-scale=1.0, 
+                                     maximum-scale=1.0, 
+                                     user-scalable=no">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css"> -->
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="http://apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+    <title>123</title>
+
+    <script>
+        // data=[
+        // 	{type:(题目类型,1单选, 2多选,3填空),name:(题目名),options:[](选项内容,填空题则为空)},
+        // 	{type:1,name:"sb110",options:["单选1","单选2"]},
+        // 	{type:2,name:"sb111",options:["单选1","单选2"]},
+        // 	{type:3,name:"sb112",options:[]},
+        // 	]
+
+
+        var data = []
+        var paperName = ""
+        var paperDetail = ""
+        //初始化
+        $(function () {
+            $("#body").fadeIn("fast")
+            //顶部导航栏动态样式
+            $("#container").css('padding-top', $("#top").height());
+            var startPos = $("#container").offset().top;
+            $.event.add(window, "scroll", function () {
+                var p = $(window).scrollTop();
+                $("#top").css('box-shadow', ((p) > startPos) ? '0 0 5px #888' : '0 0 0 #888');
+
+            });
+            setQuestionNumber()
+            initDragPanel()
+        })
+
+        function initJson() {
+            data = []
+            var count = 1
+            paperName = $("[name=title]").text()
+            paperDetail = $("[name=detail]").text()
+            $(".panel.panel-primary").each(function () {
+                var question = {
+                    no: 0,
+                    type: 0,
+                    questionName: "",
+                    option: [],
+                    ismustfill: 1,
+                }
+
+                if ($(this).find('.form-check-input').is(":checked")) {
+                    question.ismustfill = 0
+                }
+                question.no = $(this).find(".panel-title").find("text").eq(0).text()
+                count += 1
+                switch ($(this).find(".panel-title").find("text").eq(1).text()) {
+                    case ".单选":
+                        question.type = "单选"
+                        break
+                    case ".多选":
+                        question.type = "多选"
+                        break
+                    case ".填空":
+                        question.type = "自由"
+                        break
+                }
+                question.questionName = $(this).find(".panel-body").find("h4").eq(0).text()
+                $(this).find(".panel-body").find("div").each(function () {
+                    question.option[question.option.length] = $(this).find("h4").text()
+                })
+                data.push(question)
+            });
+        }
+
+        function initDragPanel() {
+            var panelList = $('#draggablePanelList');
+            console.log(panelList)
+            panelList.sortable({
+                scrollSensitivity: 50,
+                scrollSpeed: 20,
+                opacity: 0.5,
+                axis: 'y',
+                distance: 10,
+                tolerance: 'pointer',
+                revert: true,
+
+
+                handle: '.panel-heading',
+                update: function () {
+                    $('.panel', panelList).each(function (index, elem) {
+                        var $listItem = $(elem),
+                            newIndex = $listItem.index();
+                        setQuestionNumber()
+                    });
+                }
+            });
+        }
+
+        //标题序号
+        function setQuestionNumber() {
+            var count = 1
+            $("[name=number]").each(function () {
+                $(this).text(count)
+                count += 1
+            });
+        }
+
+        //添加单选
+        function addSingle() {
+            console.log(data)
+            $("#draggablePanelList").append('<div class="row clearfix">\n' +
+                '\t\t\t\t<div class="col-md-12 column">\n' +
+                '\t\t\t\t\t<div class="panel panel-primary">\n' +
+                '\t\t\t\t\t\t<div class="panel-heading">\n' +
+                '\t\t\t\t\t\t\t<h3 class="panel-title">\n' +
+                '\t\t\t\t\t\t\t\t<text name=\'number\'>x</text>\n' +
+                '\t\t\t\t\t\t\t\t<text>.单选</text>\n' +
+                '\t\t\t\t\t\t\t\t<button type="button" class="close" aria-hidden="true" onclick="removeQuestion(this)">&times;</button>\n' +
+                '\t\t\t\t\t\t\t</h3>\n' +
+                '\t\t\t\t\t\t</div>\n' +
+                '\t\t\t\t\t\t<div class="panel-body">\n' +
+                '\t\t\t\t\t\t\t<h4 contenteditable="true" onblur="checkBlur(this);">点击修改问题</h4>\n' +
+                '\n' +
+                '\n' +
+                '\t\t\t\t\t\t\t<div>\n' +
+                '\t\t\t\t\t\t\t\t<button style="margin-top: 5px;" type="button" class="close" aria-hidden="true" onclick="removeOption(this)">&times;</button>\n' +
+                '\t\t\t\t\t\t\t\t<span class="glyphicon glyphicon-record"></span>\n' +
+                '\t\t\t\t\t\t\t\t<h4 contenteditable="true" onblur="checkBlur(this);" style="display:inline-block;width: 80%;">点击修改选项</h4>\n' +
+                '\t\t\t\t\t\t\t</div>\n' +
+                '\n' +
+                '\t\t\t\t\t\t\t<div>\n' +
+                '\t\t\t\t\t\t\t\t<button style="margin-top: 5px;" type="button" class="close" aria-hidden="true" onclick="removeOption(this)">&times;</button>\n' +
+                '\t\t\t\t\t\t\t\t<span class="glyphicon glyphicon-record"></span>\n' +
+                '\t\t\t\t\t\t\t\t<h4 contenteditable="true" onblur="checkBlur(this);" style="display:inline-block; width: 80%;">点击修改选项</h4>\n' +
+                '\t\t\t\t\t\t\t</div>\n' +
+                '\n' +
+                '\n' +
+                '\t\t\t\t\t\t\t<button class="btn btn-primary" onclick="addSingleOption(this)">\n' +
+                '\t\t\t\t\t\t\t\t<span class="glyphicon glyphicon-plus"></span>\n' +
+                '\t\t\t\t\t\t\t\t选项</button>\n' +
+                '\t\t\t\t\t\t</div>\n' +
+                '\n' +
+                '\t\t\t\t\t\t<div class="panel-footer">\n' +
+                '\t\t\t\t\t\t\t<form>\n' +
+                '\t\t\t\t\t\t\t\t<div class="form-check">\n' +
+                '\t\t\t\t\t\t\t\t\t<label class="form-check-label">\n' +
+                '\t\t\t\t\t\t\t\t\t\t<input type="checkbox" class="form-check-input" value="">选答?\n' +
+                '\t\t\t\t\t\t\t\t\t</label>\n' +
+                '\t\t\t\t\t\t\t\t</div>\n' +
+                '\t\t\t\t\t\t\t</form>\n' +
+                '\t\t\t\t\t\t</div>\n' +
+                '\t\t\t\t\t</div>\n' +
+                '\t\t\t\t</div>\n' +
+                '\t\t\t</div>');
+            setQuestionNumber()
+            backToBottom()
+        }
+
+        //添加多选
+        function addMulti() {
+            $("#draggablePanelList").append('<div class="row clearfix">\n' +
+                '\t\t\t\t<div class="col-md-12 column">\n' +
+                '\t\t\t\t\t<div class="panel panel-primary">\n' +
+                '\t\t\t\t\t\t<div class="panel-heading">\n' +
+                '\t\t\t\t\t\t\t<h3 class="panel-title">\n' +
+                '\t\t\t\t\t\t\t\t<text name=\'number\'>x</text>\n' +
+                '\t\t\t\t\t\t\t\t<text>.多选</text>\n' +
+                '\t\t\t\t\t\t\t\t<button type="button" class="close" aria-hidden="true" onclick="removeQuestion(this)">&times;</button>\n' +
+                '\t\t\t\t\t\t\t</h3>\n' +
+                '\t\t\t\t\t\t</div>\n' +
+                '\t\t\t\t\t\t<div class="panel-body">\n' +
+                '\t\t\t\t\t\t\t<h4 contenteditable="true" onblur="checkBlur(this);">点击修改问题</h4>\n' +
+                '\n' +
+                '\n' +
+                '\t\t\t\t\t\t\t<div>\n' +
+                '\t\t\t\t\t\t\t\t<button style="margin-top: 5px;" type="button" class="close" aria-hidden="true" onclick="removeOption(this)">&times;</button>\n' +
+                '\t\t\t\t\t\t\t\t<span class="glyphicon glyphicon-unchecked"></span>\n' +
+                '\t\t\t\t\t\t\t\t<h4 contenteditable="true" onblur="checkBlur(this);" style="display:inline-block;width: 80%;">点击修改选项</h4>\n' +
+                '\t\t\t\t\t\t\t</div>\n' +
+                '\n' +
+                '\t\t\t\t\t\t\t<div>\n' +
+                '\t\t\t\t\t\t\t\t<button style="margin-top: 5px;" type="button" class="close" aria-hidden="true" onclick="removeOption(this)">&times;</button>\n' +
+                '\t\t\t\t\t\t\t\t<span class="glyphicon glyphicon-unchecked"></span>\n' +
+                '\t\t\t\t\t\t\t\t<h4 contenteditable="true" onblur="checkBlur(this);" style="display:inline-block; width: 80%;">点击修改选项</h4>\n' +
+                '\t\t\t\t\t\t\t</div>\n' +
+                '\n' +
+                '\n' +
+                '\t\t\t\t\t\t\t<button class="btn btn-primary" onclick="addMultiOption(this)">\n' +
+                '\t\t\t\t\t\t\t\t<span class="glyphicon glyphicon-plus"></span>\n' +
+                '\t\t\t\t\t\t\t\t选项</button>\n' +
+                '\t\t\t\t\t\t</div>\n' +
+                '\n' +
+                '\t\t\t\t\t\t<div class="panel-footer">\n' +
+                '\t\t\t\t\t\t\t<form>\n' +
+                '\t\t\t\t\t\t\t\t<div class="form-check">\n' +
+                '\t\t\t\t\t\t\t\t\t<label class="form-check-label">\n' +
+                '\t\t\t\t\t\t\t\t\t\t<input type="checkbox" class="form-check-input" value="">选答?\n' +
+                '\t\t\t\t\t\t\t\t\t</label>\n' +
+                '\t\t\t\t\t\t\t\t</div>\n' +
+                '\t\t\t\t\t\t\t</form>\n' +
+                '\t\t\t\t\t\t</div>\n' +
+                '\t\t\t\t\t</div>\n' +
+                '\t\t\t\t</div>\n' +
+                '\t\t\t</div>');
+            setQuestionNumber()
+            backToBottom()
+        }
+
+        //添加多选
+        function addBlank() {
+            $("#draggablePanelList").append('<div class="row clearfix">\n' +
+                '\t\t\t\t<div class="col-md-12 column">\n' +
+                '\t\t\t\t\t<div class="panel panel-primary">\n' +
+                '\t\t\t\t\t\t<div class="panel-heading">\n' +
+                '\t\t\t\t\t\t\t<h3 class="panel-title">\n' +
+                '\t\t\t\t\t\t\t\t<text name=\'number\'>x</text>\n' +
+                '\t\t\t\t\t\t\t\t<text>.填空</text>\n' +
+                '\t\t\t\t\t\t\t\t<button type="button" class="close" aria-hidden="true" onclick="removeQuestion(this)">&times;</button>\n' +
+                '\t\t\t\t\t\t\t</h3>\n' +
+                '\t\t\t\t\t\t</div>\n' +
+                '\t\t\t\t\t\t<div class="panel-body">\n' +
+                '\t\t\t\t\t\t\t<h4 contenteditable="true" onblur="checkBlur(this);">点击修改问题</h4>\n' +
+                '\n' +
+                '\t\t\t\t\t\t\t<div>\n' +
+                '\t\t\t\t\t\t\t\t<input type="text" class="form-control" placeholder="此处在答卷中可输入"  disabled="disabled"/>\n' +
+                '\t\t\t\t\t\t\t</div>\n' +
+                '\n' +
+                '\t\t\t\t\t\t</div>\n' +
+                '\n' +
+                '\t\t\t\t\t\t<div class="panel-footer">\n' +
+                '\t\t\t\t\t\t\t<form>\n' +
+                '\t\t\t\t\t\t\t\t<div class="form-check">\n' +
+                '\t\t\t\t\t\t\t\t\t<label class="form-check-label">\n' +
+                '\t\t\t\t\t\t\t\t\t\t<input type="checkbox" class="form-check-input" value="">选答?\n' +
+                '\t\t\t\t\t\t\t\t\t</label>\n' +
+                '\t\t\t\t\t\t\t\t</div>\n' +
+                '\t\t\t\t\t\t\t</form>\n' +
+                '\t\t\t\t\t\t</div>\n' +
+                '\t\t\t\t\t</div>\n' +
+                '\t\t\t\t</div>\n' +
+                '\t\t\t</div>');
+            setQuestionNumber()
+            backToBottom()
+        }
+
+        //回到底部
+        function backToBottom() {
+            clearInterval(timer);
+            var target = document.body.scrollHeight - window.innerHeight//目标滚动条位置
+            var start = document.body.scrollTop//滚动条开始位置
+            var distance = target - start//距离差
+            console.log("sb长度" + target)
+            var timer = setInterval(function () {
+                distance = 0.95 * distance//距离差逼近0
+                window.scrollTo(0, target - distance);//目标减去距离差
+                if (distance < 1) {
+                    window.scrollTo(0, target);
+                    clearInterval(timer);
+                }
+            }, 1);
+
+        }
+
+        //检查失焦
+        function checkBlur(obj) {
+            //防止内容为空
+            if ($(obj).text() == null || $(obj).text() == "") {
+                $(obj).text("点击修改内容")
+            }
+        }
+
+        function addSingleOption(obj) {
+            $(obj).before('<div>\
+								<button style="margin-top: 5px;" type="button" class="close" aria-hidden="true" onclick="removeOption(this)">&times;</button>\
+								<span class="glyphicon glyphicon-record"></span>\
+								<h4 contenteditable="true" onblur="checkBlur(this);" style="display:inline-block; width: 80%;">点击修改选项</h4>\
+							</div>')
+            $(obj).prev().css("display", "none");
+            $(obj).prev().slideDown("fast");
+        }
+
+        function addMultiOption(obj) {
+            $(obj).before('<div>\
+								<button style="margin-top: 5px;" type="button" class="close" aria-hidden="true" onclick="removeOption(this)">&times;</button>\
+								<span class="glyphicon glyphicon-unchecked"></span>\
+								<h4 contenteditable="true" onblur="checkBlur(this);" style="display:inline-block;width: 80%;">点击修改选项</h4>\
+							</div>')
+            $(obj).prev().css("display", "none");
+            $(obj).prev().slideDown("fast");
+        }
+
+        function removeQuestion(obj) {
+            //动画
+            $(obj).parent().parent().parent().fadeTo("fast", 0, function () {//fade
+                $(this).slideUp("slow", function () {//slide up
+                    $(this).remove();//then remove from the DOM
+                    setQuestionNumber()
+                });
+            });
+        }
+
+        function removeOption(obj) {
+            // 控制不要删除最后一个选项, 直接前端控制异常,没选项还选个jb,其实只有一个选项也还选个jb
+            //只是一个的代码写起来会比较方便hhh
+            if ($(obj).parent().prev()[0].tagName != "DIV" && $(obj).parent().next()[0].tagName != "DIV") {
+                alert("都最后一个选项了,删你马!!!!")
+                return;
+            }
+            //动画
+            $(obj).parent().fadeTo("fast", 0, function () {//fade
+                $(this).slideUp("fast", function () {//slide up
+                    $(this).remove();//then remove from the DOM
+                });
+            });
+        }
+
+        function submit() {
+            var count = 0
+            $("[name=number]").each(function () {
+                count += 1
+            });
+            if (count == 0) {
+                alert("一题也没有,交你马!!!")
+            } else {
+                initJson()
+                console.log(data)
+                postJson()
+                //post("success/",  {username:'sb110'});
+
+            }
+        }
+
+        function user() {
+            $('#body').fadeOut('fast')
+            window.setTimeout(function () {
+                $('#body').fadeIn('fast')
+                window.location.href = "/user/"
+            }, 300);
+
+        }
+
+        function post(URL, PARAMS) {
+            var temp = document.createElement("form");
+            temp.action = URL;
+            temp.method = "post";
+            temp.style.display = "none";
+            for (var x in PARAMS) {
+                var opt = document.createElement("textarea");
+                opt.name = x;
+                opt.value = PARAMS[x];
+                // alert(opt.name)
+                temp.appendChild(opt);
+            }
+            document.body.appendChild(temp);
+            temp.submit();
+            return temp;
+        }
+
+        function sleep(delay) {
+            var start = (new Date()).getTime();
+            while ((new Date()).getTime() - start < delay) {
+                continue;
+            }
+        }
+
+        function postJson() {
+            console.log({paperName: paperName, paperDetail: paperDetail, questions: JSON.stringify(data)})
+            $.ajax({
+                url: '/success/',
+                type: 'post',
+                dataType: 'json',
+                traditional: true,//这个参数必须添加，采用传统方式转换
+                data: {paperName: paperName, paperDetail: paperDetail, questions: JSON.stringify(data)},
+                success: function (result) {
+                    if (result.resultCode == 0) {
+                        alert("成功")
+                    } else {
+                        alert("保存失败, 您已经不在登录状态, 请重新登录")
+                    }
+                }
+            });
+        }
+    </script>
+</head>
+<body id="body" style="display: none">
+<div id="top">
+    <div class="btn-group">
+        <button class="btn btn-primary" onclick="addSingle()">
+            <span class="glyphicon glyphicon-plus"></span>
+            单选
+        </button>
+        <button class="btn btn-primary" onclick="addMulti()">
+            <span class="glyphicon glyphicon-plus"></span>
+            多选
+        </button>
+        <button class="btn btn-primary" onclick="addBlank()">
+            <span class="glyphicon glyphicon-plus"></span>
+            填空
+        </button>
+    </div>
+
+    <button class="btn btn-success" style="float: right;" onclick="submit()">
+        <span class="glyphicon glyphicon-ok"></span>
+        保存
+    </button>
+    <button class="btn btn-info" style="float: right;" onclick="user()">
+        <span class="glyphicon glyphicon-repeat"></span>
+        返回
+    </button>
+</div>
+
+<div class="container" id="container">
+
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <h2 contenteditable="true" name="title" onblur="checkBlur(this);">{{ paperName }}</h2>
+            <h4 contenteditable="true" name="detail" onblur="checkBlur(this)">{{ paperDetail }}</h4>
+        </div>
+    </div>
+
+
+    <div id="draggablePanelList" class="list-unstyled">
+
+
+        {% for i in questions %}
+
+            {% if i.type == '单选'  %}
+                <!-- 单选面板 -->
+            <div class="row clearfix">
+                <div class="col-md-12 column">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <text name='number'>x</text>
+                                <text>.单选</text>
+                                <button type="button" class="close" aria-hidden="true" onclick="removeQuestion(this)">
+                                    &times;
+                                </button>
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <h4 contenteditable="true" onblur="checkBlur(this);">{{ i.questionName }}</h4>
+
+                            {% for k in i.options %}
+                            <div>
+                                <button style="margin-top: 5px;" type="button" class="close" aria-hidden="true"
+                                        onclick="removeOption(this)">&times;
+                                </button>
+                                <span class="glyphicon glyphicon-record"></span>
+                                <h4 contenteditable="true" onblur="checkBlur(this);"
+                                    style="display:inline-block;width: 80%;">{{ k }}</h4>
+                            </div>
+                            {% endfor %}
+
+                            <button class="btn btn-primary" onclick="addSingleOption(this)">
+                                <span class="glyphicon glyphicon-plus"></span>
+                                选项
+                            </button>
+                        </div>
+
+                        <div class="panel-footer">
+                            <form>
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" value="">选答?
+                                    </label>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% elif i.type == '多选' %}
+                <!-- 多选面板 -->
+            <div class="row clearfix">
+                <div class="col-md-12 column">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <text name='number'>x</text>
+                                <text>.多选</text>
+                                <button type="button" class="close" aria-hidden="true" onclick="removeQuestion(this)">
+                                    &times;
+                                </button>
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <h4 contenteditable="true" onblur="checkBlur(this);">{{ i.questionName }}</h4>
+
+
+                            {% for k in i.options %}
+                            <div>
+                                <button style="margin-top: 5px;" type="button" class="close" aria-hidden="true"
+                                        onclick="removeOption(this)">&times;
+                                </button>
+                                <span class="glyphicon glyphicon-unchecked"></span>
+                                <h4 contenteditable="true" onblur="checkBlur(this);"
+                                    style="display:inline-block;width: 80%;">{{ k }}</h4>
+                            </div>
+                            {% endfor %}
+
+                            <button class="btn btn-primary" onclick="addMultiOption(this)">
+                                <span class="glyphicon glyphicon-plus"></span>
+                                选项
+                            </button>
+                        </div>
+
+                        <div class="panel-footer">
+                            <form>
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" value="">选答?
+                                    </label>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% else %}
+                 <!-- 填空 -->
+            <div class="row clearfix">
+                <div class="col-md-12 column">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <text name='number'>x</text>
+                                <text>.填空</text>
+                                <button type="button" class="close" aria-hidden="true" onclick="removeQuestion(this)">
+                                    &times;
+                                </button>
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <h4 contenteditable="true" onblur="checkBlur(this);">{{ i.questionName }}</h4>
+
+                            <div>
+                                <input type="text" class="form-control" placeholder="此处在答卷中可输入" disabled="disabled"/>
+                            </div>
+
+                        </div>
+
+                        <div class="panel-footer">
+                            <form>
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" value="">选答?
+                                    </label>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>

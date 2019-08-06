@@ -152,7 +152,57 @@ def loginAction(request):
     return JsonResponse({'resultCode': 0})
 
 
-# @loginCheck
-def user(request):
-    papers=Paper.objects.filter(uid_id=request.session.get("userID"))
-    return render(request, "user.html",{"papers":papers})
+@loginCheck
+def userView(request):
+    Paperobj=Paper.objects.filter(uid=request.session.get("userID"))
+    rsa=[]
+    f = open('second_public_key.txt', 'r', encoding='utf-8')
+    secondPublicKey = f.read()
+    f.close()
+    for i in list(Paperobj):
+        adict={"userId":request.session.get("userID"),"paperId":i.id,"whoisyourdaddy":"sb110"}
+        rsa.append((i,rsaCrypto(adict,secondPublicKey)))
+    return render(request, "user.html",{"papers":rsa})
+
+def modifyView(request,m):
+    f = open('second_private_key.txt', 'r', encoding='utf-8')
+    secondPrivateKey = f.read()
+    f.close()
+    try:
+        adict=rsaDecrypt(m,secondPrivateKey)
+        if not adict['whoisyourdaddy']=='sb110':
+            return render(request,"404.html")
+        if adict['userId']==request.session.get("userID"):
+            return render(request,"modify.html",getModifyQuestion(adict))
+        return render(request, "404.html")
+    except Exception as err:
+        print(err)
+        return render(request,"404.html")
+
+def getModifyQuestion(adict):
+    questionInfo=[]
+    paper=Paper.objects.filter(id=adict['paperId'])
+    questions=Question.objects.filter(pid=paper[0])
+    for i in questions:
+        questionDict={'no':i.no,
+                    'type': i.type,
+                    'questionName': i.content,
+                    'options': [],
+                    'ismustfill': i.ismustfill,}
+        options=Option.objects.filter(qid=i)
+        for k in options:
+            questionDict['options'].append(k.content)
+        questionInfo.append(questionDict)
+    return {"paperName":paper[0].name,"paperDetail":paper[0].detail,"questions":questionInfo}
+
+
+
+
+
+
+
+
+
+
+
+
