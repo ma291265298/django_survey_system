@@ -63,7 +63,7 @@ class Limittime(models.Model):
 class Option(models.Model):
     no = models.IntegerField(blank=True, null=True)
     content = models.CharField(max_length=255, blank=True, null=True)
-    qid = models.ForeignKey('Question', models.DO_NOTHING, db_column='qid', blank=True, null=True)
+    qid = models.ForeignKey('Question', on_delete=models.CASCADE, db_column='qid', blank=True, null=True)
 
     class Meta:
         managed = False
@@ -76,9 +76,9 @@ class Paper(models.Model):
     type = models.CharField(max_length=2, blank=True, null=True)
     url = models.CharField(max_length=20, blank=True, null=True)
     verify = models.CharField(max_length=20, blank=True, null=True)
-    uid = models.ForeignKey('User', models.DO_NOTHING, db_column='uid', blank=True, null=True)
-    timelimit = models.ForeignKey(Limittime, models.DO_NOTHING, db_column='timelimit', blank=True, null=True)
-    numberlimit = models.ForeignKey(Limitnumber, models.DO_NOTHING, db_column='numberlimit', blank=True, null=True)
+    uid = models.ForeignKey('User', db_column='uid', blank=True, null=True,on_delete=models.CASCADE)
+    timelimit = models.ForeignKey(Limittime,  db_column='timelimit', blank=True, null=True,on_delete=models.CASCADE)
+    numberlimit = models.ForeignKey(Limitnumber,  db_column='numberlimit', blank=True, null=True,on_delete=models.CASCADE)
     islist = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -91,7 +91,7 @@ class Question(models.Model):
     type = models.CharField(max_length=2, blank=True, null=True)
     ismustfill = models.CharField(max_length=20, blank=True, null=True)
     content = models.CharField(max_length=255, blank=True, null=True)
-    pid = models.ForeignKey(Paper, models.DO_NOTHING, db_column='pid', blank=True, null=True)
+    pid = models.ForeignKey(Paper, on_delete=models.CASCADE, db_column='pid', blank=True, null=True)
 
     class Meta:
         managed = False
