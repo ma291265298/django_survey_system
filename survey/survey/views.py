@@ -259,4 +259,9 @@ def releasePaperFunction(paperId):
 def urlGenerator(size=8, chars=string.ascii_letters + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
+def paperView(request,m):
+    paper_obj=Paper.objects.get(url=m)
+    return render(request,"paper.html",getModifyQuestion({"paperId":paper_obj.id}))
+
+
 

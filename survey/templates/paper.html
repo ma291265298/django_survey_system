@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,
+                                     initial-scale=1.0,
+                                     maximum-scale=1.0,
+                                     user-scalable=no">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css"> -->
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="http://apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container" id="container">
+
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <h2 >{{ paperName }}</h2>
+            <h4>{{ paperDetail }}</h4>
+        </div>
+    </div>
+
+
+    <div id="draggablePanelList" class="list-unstyled">
+
+
+        {% for i in questions %}
+
+            {% if i.type == '单选' %}
+                <!-- 单选面板 -->
+                <div class="row clearfix">
+                    <div class="col-md-12 column">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                    <text name='number'>x</text>
+                                    <text>.单选</text>
+
+                                </h3>
+                            </div>
+                            <div class="panel-body">
+                                <h4>{{ i.questionName }}</h4>
+
+                                {% for k in i.options %}
+                                    <div>
+                                        <span class="glyphicon glyphicon-record"></span>
+                                        <h4 style="display:inline-block;width: 80%;">{{ k }}</h4>
+                                    </div>
+                                {% endfor %}
+
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+            {% elif i.type == '多选' %}
+                <!-- 多选面板 -->
+                <div class="row clearfix">
+                    <div class="col-md-12 column">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                    <text name='number'>x</text>
+                                    <text>.多选</text>
+
+                                </h3>
+                            </div>
+                            <div class="panel-body">
+                                <h4 >{{ i.questionName }}</h4>
+
+
+                                {% for k in i.options %}
+                                    <div>
+
+                                        <span class="glyphicon glyphicon-unchecked"></span>
+                                        <h4 style="display:inline-block;width: 80%;">{{ k }}</h4>
+                                    </div>
+                                {% endfor %}
+
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+            {% else %}
+                <!-- 填空 -->
+                <div class="row clearfix">
+                    <div class="col-md-12 column">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                    <text name='number'>x</text>
+                                    <text>.填空</text>
+
+                                </h3>
+                            </div>
+                            <div class="panel-body">
+                                <h4>{{ i.questionName }}</h4>
+
+                                <div>
+                                    <input type="text" class="form-control"/>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>
