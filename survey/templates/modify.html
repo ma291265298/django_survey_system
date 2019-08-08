@@ -392,14 +392,26 @@
         function postJson() {
             console.log({paperName: paperName, paperDetail: paperDetail, questions: JSON.stringify(data)})
             $.ajax({
-                url: '/success/',
+                url: '/modifySuccess/',
                 type: 'post',
                 dataType: 'json',
                 traditional: true,//这个参数必须添加，采用传统方式转换
-                data: {paperName: paperName, paperDetail: paperDetail, questions: JSON.stringify(data)},
+                data: {
+                    paperId:{{ paperId }},
+                    paperName: paperName,
+                    paperDetail: paperDetail,
+                    questions: JSON.stringify(data)
+                },
                 success: function (result) {
                     if (result.resultCode == 0) {
-                        alert("成功")
+                        alert("保存成功")
+                        $('#body').fadeOut('fast')
+                    window.setTimeout(function() {
+                        $('#body').fadeIn('fast')
+					    window.location.href="/user/"
+				}, 300);
+
+
                     } else {
                         alert("保存失败, 您已经不在登录状态, 请重新登录")
                     }
@@ -409,6 +421,11 @@
     </script>
 </head>
 <body id="body" style="display: none">
+
+
+
+
+
 <div id="top">
     <div class="btn-group">
         <button class="btn btn-primary" onclick="addSingle()">
@@ -436,7 +453,6 @@
 </div>
 
 <div class="container" id="container">
-
     <div class="row clearfix">
         <div class="col-md-12 column">
             <h2 contenteditable="true" name="title" onblur="checkBlur(this);">{{ paperName }}</h2>
@@ -450,136 +466,155 @@
 
         {% for i in questions %}
 
-            {% if i.type == '单选'  %}
+            {% if i.type == '单选' %}
                 <!-- 单选面板 -->
-            <div class="row clearfix">
-                <div class="col-md-12 column">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">
-                                <text name='number'>x</text>
-                                <text>.单选</text>
-                                <button type="button" class="close" aria-hidden="true" onclick="removeQuestion(this)">
-                                    &times;
-                                </button>
-                            </h3>
-                        </div>
-                        <div class="panel-body">
-                            <h4 contenteditable="true" onblur="checkBlur(this);">{{ i.questionName }}</h4>
-
-                            {% for k in i.options %}
-                            <div>
-                                <button style="margin-top: 5px;" type="button" class="close" aria-hidden="true"
-                                        onclick="removeOption(this)">&times;
-                                </button>
-                                <span class="glyphicon glyphicon-record"></span>
-                                <h4 contenteditable="true" onblur="checkBlur(this);"
-                                    style="display:inline-block;width: 80%;">{{ k }}</h4>
+                <div class="row clearfix">
+                    <div class="col-md-12 column">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                    <text name='number'>x</text>
+                                    <text>.单选</text>
+                                    <button type="button" class="close" aria-hidden="true"
+                                            onclick="removeQuestion(this)">
+                                        &times;
+                                    </button>
+                                </h3>
                             </div>
-                            {% endfor %}
+                            <div class="panel-body">
+                                <h4 contenteditable="true" onblur="checkBlur(this);">{{ i.questionName }}</h4>
 
-                            <button class="btn btn-primary" onclick="addSingleOption(this)">
-                                <span class="glyphicon glyphicon-plus"></span>
-                                选项
-                            </button>
-                        </div>
+                                {% for k in i.options %}
+                                    <div>
+                                        <button style="margin-top: 5px;" type="button" class="close" aria-hidden="true"
+                                                onclick="removeOption(this)">&times;
+                                        </button>
+                                        <span class="glyphicon glyphicon-record"></span>
+                                        <h4 contenteditable="true" onblur="checkBlur(this);"
+                                            style="display:inline-block;width: 80%;">{{ k }}</h4>
+                                    </div>
+                                {% endfor %}
 
-                        <div class="panel-footer">
-                            <form>
-                                <div class="form-check">
-                                    <label class="form-check-label">
-                                        <input type="checkbox" class="form-check-input" value="">选答?
-                                    </label>
-                                </div>
-                            </form>
+                                <button class="btn btn-primary" onclick="addSingleOption(this)">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                    选项
+                                </button>
+                            </div>
+
+                            <div class="panel-footer">
+                                <form>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            {% if i.ismustfill == '1' %}
+                                                <input type="checkbox" class="form-check-input" value="">选答?
+                                            {% else %}
+                                                <input type="checkbox" class="form-check-input" value=""
+                                                       checked="checked">选答?
+                                            {% endif %}
+                                        </label>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
             {% elif i.type == '多选' %}
                 <!-- 多选面板 -->
-            <div class="row clearfix">
-                <div class="col-md-12 column">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">
-                                <text name='number'>x</text>
-                                <text>.多选</text>
-                                <button type="button" class="close" aria-hidden="true" onclick="removeQuestion(this)">
-                                    &times;
-                                </button>
-                            </h3>
-                        </div>
-                        <div class="panel-body">
-                            <h4 contenteditable="true" onblur="checkBlur(this);">{{ i.questionName }}</h4>
-
-
-                            {% for k in i.options %}
-                            <div>
-                                <button style="margin-top: 5px;" type="button" class="close" aria-hidden="true"
-                                        onclick="removeOption(this)">&times;
-                                </button>
-                                <span class="glyphicon glyphicon-unchecked"></span>
-                                <h4 contenteditable="true" onblur="checkBlur(this);"
-                                    style="display:inline-block;width: 80%;">{{ k }}</h4>
+                <div class="row clearfix">
+                    <div class="col-md-12 column">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                    <text name='number'>x</text>
+                                    <text>.多选</text>
+                                    <button type="button" class="close" aria-hidden="true"
+                                            onclick="removeQuestion(this)">
+                                        &times;
+                                    </button>
+                                </h3>
                             </div>
-                            {% endfor %}
+                            <div class="panel-body">
+                                <h4 contenteditable="true" onblur="checkBlur(this);">{{ i.questionName }}</h4>
 
-                            <button class="btn btn-primary" onclick="addMultiOption(this)">
-                                <span class="glyphicon glyphicon-plus"></span>
-                                选项
-                            </button>
-                        </div>
 
-                        <div class="panel-footer">
-                            <form>
-                                <div class="form-check">
-                                    <label class="form-check-label">
-                                        <input type="checkbox" class="form-check-input" value="">选答?
-                                    </label>
-                                </div>
-                            </form>
+                                {% for k in i.options %}
+                                    <div>
+                                        <button style="margin-top: 5px;" type="button" class="close" aria-hidden="true"
+                                                onclick="removeOption(this)">&times;
+                                        </button>
+                                        <span class="glyphicon glyphicon-unchecked"></span>
+                                        <h4 contenteditable="true" onblur="checkBlur(this);"
+                                            style="display:inline-block;width: 80%;">{{ k }}</h4>
+                                    </div>
+                                {% endfor %}
+
+                                <button class="btn btn-primary" onclick="addMultiOption(this)">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                    选项
+                                </button>
+                            </div>
+
+                            <div class="panel-footer">
+                                <form>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            {% if i.ismustfill == '1' %}
+                                                <input type="checkbox" class="form-check-input" value="">选答?
+                                            {% else %}
+                                                <input type="checkbox" class="form-check-input" value=""
+                                                       checked="checked">选答?
+                                            {% endif %}
+                                        </label>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
             {% else %}
-                 <!-- 填空 -->
-            <div class="row clearfix">
-                <div class="col-md-12 column">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">
-                                <text name='number'>x</text>
-                                <text>.填空</text>
-                                <button type="button" class="close" aria-hidden="true" onclick="removeQuestion(this)">
-                                    &times;
-                                </button>
-                            </h3>
-                        </div>
-                        <div class="panel-body">
-                            <h4 contenteditable="true" onblur="checkBlur(this);">{{ i.questionName }}</h4>
+                <!-- 填空 -->
+                <div class="row clearfix">
+                    <div class="col-md-12 column">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                    <text name='number'>x</text>
+                                    <text>.填空</text>
+                                    <button type="button" class="close" aria-hidden="true"
+                                            onclick="removeQuestion(this)">
+                                        &times;
+                                    </button>
+                                </h3>
+                            </div>
+                            <div class="panel-body">
+                                <h4 contenteditable="true" onblur="checkBlur(this);">{{ i.questionName }}</h4>
 
-                            <div>
-                                <input type="text" class="form-control" placeholder="此处在答卷中可输入" disabled="disabled"/>
+                                <div>
+                                    <input type="text" class="form-control" placeholder="此处在答卷中可输入"
+                                           disabled="disabled"/>
+                                </div>
+
                             </div>
 
-                        </div>
-
-                        <div class="panel-footer">
-                            <form>
-                                <div class="form-check">
-                                    <label class="form-check-label">
-                                        <input type="checkbox" class="form-check-input" value="">选答?
-                                    </label>
-                                </div>
-                            </form>
+                            <div class="panel-footer">
+                                <form>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                           {% if i.ismustfill == '1' %}
+                                                <input type="checkbox" class="form-check-input" value="">选答?
+                                            {% else %}
+                                                <input type="checkbox" class="form-check-input" value=""
+                                                       checked="checked">选答?
+                                            {% endif %}
+                                        </label>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             {% endif %}
 
         {% endfor %}

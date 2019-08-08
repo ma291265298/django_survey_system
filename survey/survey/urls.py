@@ -27,8 +27,11 @@ urlpatterns = [
     path('emailCheck/', views.emailCheck),
     path('loginAction/', views.loginAction),
     path('user/', views.userView),
+    path('deletePaper/',views.deleteAction),
+    path('modifySuccess/',views.saveModifyAction),
+    path('releasePaper/',views.releasePaperAction),
     re_path(r'^a/AkdjrEkclaoq/(.*)', views.secondRegister),
     re_path(r'^modify/(.*)', views.modifyView),
-    #re_path(r'/*', views.erro),
+    re_path(r'^.*', views.erro),
     #re_path(r'/*',views.erro),
 ]

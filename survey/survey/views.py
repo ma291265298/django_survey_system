@@ -4,6 +4,8 @@ from django.shortcuts import render
 import json
 import base64
 import smtplib
+import random
+import string
 from email.mime.text import MIMEText
 from email.utils import formataddr
 
@@ -47,7 +49,7 @@ def addSuccess(request):
         return JsonResponse({'resultCode': 1})
     user=User.objects.filter(id=request.session.get("userID"))
     paper_obj = Paper(name=request.POST.get('paperName'),
-                      detail=request.POST.get('paperDetail'),uid=user[0])
+                      detail=request.POST.get('paperDetail'),uid=user[0],verify='未发布')
     paper_obj.save()
     for i in json.loads(request.POST.get('questions')):
         question_obj = Question(no=i['no'], content=i['questionName'], type=i['type'], ismustfill=i['ismustfill'],
@@ -70,7 +72,7 @@ def sendRegisterEmail(request):
     f.close()
     m = request.POST.get('raw')
     adict = rsaDecrypt(m, firstPrivateKey)
-    adict['whoisyoudaddy'] = 'sb110'
+    adict['whoisyourdaddy'] = 'sb110'
     url = rsaCrypto(adict, secondPublicKey)
     mail(adict, url)
 
@@ -82,7 +84,7 @@ def secondRegister(request, m):
     print("注册信息")
     try:
         adict = rsaDecrypt(m, secondPrivateKey)
-        if adict['whoisyoudaddy'] == 'sb110':
+        if adict['whoisyourdaddy'] == 'sb110':
             user_obj = User.objects.filter(Q(name=adict['name']) | Q(email=adict['email']))
             if len(user_obj) == 0:
                 user_obj = User(name=adict['name'], email=adict['email'], password=adict['password'])
@@ -160,17 +162,27 @@ def userView(request):
     secondPublicKey = f.read()
     f.close()
     for i in list(Paperobj):
-        adict={"userId":request.session.get("userID"),"paperId":i.id,"whoisyourdaddy":"sb110"}
-        rsa.append((i,rsaCrypto(adict,secondPublicKey)))
+        adict={"userId":request.session.get("userID"),"paperId":i.id,"whoisyourdaddy":"sb110"}#发布
+        bdict = {"userId": request.session.get("userID"), "paperId": i.id, "whoisyourdaddy": "sb111"}#编辑
+        cdict = {"userId": request.session.get("userID"), "paperId": i.id, "whoisyourdaddy": "sb112"}#分享
+        ddict = {"userId": request.session.get("userID"), "paperId": i.id, "whoisyourdaddy": "sb113"}  #统计
+        edict = {"userId": request.session.get("userID"), "paperId": i.id, "whoisyourdaddy": "sb114"}  #删除
+        rsa.append((i,rsaCrypto(adict,secondPublicKey),
+                    rsaCrypto(bdict,secondPublicKey),
+                    rsaCrypto(cdict,secondPublicKey),
+                    rsaCrypto(ddict,secondPublicKey),
+                    rsaCrypto(edict,secondPublicKey),
+                    ))
     return render(request, "user.html",{"papers":rsa})
 
+@loginCheck
 def modifyView(request,m):
     f = open('second_private_key.txt', 'r', encoding='utf-8')
     secondPrivateKey = f.read()
     f.close()
     try:
         adict=rsaDecrypt(m,secondPrivateKey)
-        if not adict['whoisyourdaddy']=='sb110':
+        if not adict['whoisyourdaddy']=='sb111':
             return render(request,"404.html")
         if adict['userId']==request.session.get("userID"):
             return render(request,"modify.html",getModifyQuestion(adict))
@@ -193,16 +205,58 @@ def getModifyQuestion(adict):
         for k in options:
             questionDict['options'].append(k.content)
         questionInfo.append(questionDict)
-    return {"paperName":paper[0].name,"paperDetail":paper[0].detail,"questions":questionInfo}
+    return {"paperId":paper[0].id,"paperName":paper[0].name,"paperDetail":paper[0].detail,"questions":questionInfo}
+
+def deleteAction(request):
+    f = open('second_private_key.txt', 'r', encoding='utf-8')
+    secondPrivateKey = f.read()
+    f.close()
+    try:
+        m=request.POST.get('raw')
+        adict=rsaDecrypt(m,secondPrivateKey)
+        if not adict['whoisyourdaddy']=='sb114':
+            return JsonResponse({'resultCode': 1})
+        if adict['userId']==request.session.get("userID"):
+            deleteFunction(adict['paperId'])
+            return JsonResponse({'resultCode': 0})
+        return render(request, "404.html")
+    except Exception as err:
+        print(err)
+        JsonResponse({'resultCode': 1})
+
+def deleteFunction(paperId):
+    Paper_obj=Paper.objects.get(id=paperId)
+    Paper_obj.delete()
+
+def saveModifyAction(request):
+    deleteFunction(request.POST.get('paperId'))
+    return addSuccess(request)
+def releasePaperAction(request):
+    f = open('second_private_key.txt', 'r', encoding='utf-8')
+    secondPrivateKey = f.read()
+    f.close()
+    try:
+        m = request.POST.get('raw')
+        adict = rsaDecrypt(m, secondPrivateKey)
+        if not adict['whoisyourdaddy'] == 'sb110':
+            return JsonResponse({'resultCode': 1})
+        if adict['userId'] == request.session.get("userID"):
+            releasePaperFunction(adict['paperId'])
+            return JsonResponse({'resultCode': 0})
+        JsonResponse({'resultCode': 1})
+    except Exception as err:
+        print(err)
+        JsonResponse({'resultCode': 1})
+
+def releasePaperFunction(paperId):
+    Paper_obj = Paper.objects.get(id=paperId)
+    Paper_obj.verify='已发布'
+    Paper_obj.url=urlGenerator()
+    Paper_obj.save()
 
 
 
-
-
-
-
-
-
-
+def urlGenerator(size=8, chars=string.ascii_letters + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
 
 
