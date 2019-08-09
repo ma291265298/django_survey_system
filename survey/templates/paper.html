@@ -18,7 +18,7 @@
 
     <div class="row clearfix">
         <div class="col-md-12 column">
-            <h2 >{{ paperName }}</h2>
+            <h2>{{ paperName }}</h2>
             <h4>{{ paperDetail }}</h4>
         </div>
     </div>
@@ -36,22 +36,28 @@
                         <div class="panel panel-primary">
                             <div class="panel-heading">
                                 <h3 class="panel-title">
-                                    <text name='number'>x</text>
-                                    <text>.单选</text>
-
+                                    <text name='number'>{{ i.no }}</text>
+                                    <text name='type'>.单选</text>
+                                    <text>{% if i.ismustfill == '0' %}
+                                        (选填)
+                                    {% endif %}</text>
                                 </h3>
                             </div>
                             <div class="panel-body">
                                 <h4>{{ i.questionName }}</h4>
 
-                                {% for k in i.options %}
-                                    <div>
-                                        <span class="glyphicon glyphicon-record"></span>
-                                        <h4 style="display:inline-block;width: 80%;">{{ k }}</h4>
-                                    </div>
-                                {% endfor %}
-
-
+                                <div {% if i.ismustfill == '1' %}
+                                    name="mustFillSingle"
+                                {% endif %}>
+                                    {% for k in i.options %}
+                                        <div class="checkbox">
+                                            <label style="font-size: 15px;font-weight: bold;"><input type="checkbox"
+                                                                                                     name="single"
+                                                                                                     value="{{ k }}">{{ k }}
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
                             </div>
 
 
@@ -66,22 +72,29 @@
                         <div class="panel panel-primary">
                             <div class="panel-heading">
                                 <h3 class="panel-title">
-                                    <text name='number'>x</text>
-                                    <text>.多选</text>
+                                    <text name='number'>{{ i.no }}</text>
+                                    <text name='type'>.多选</text>
+                                    <text> {% if i.ismustfill == '0' %}
+                                        (选填)
+                                    {% endif %}</text>
 
                                 </h3>
                             </div>
                             <div class="panel-body">
-                                <h4 >{{ i.questionName }}</h4>
+                                <h4>{{ i.questionName }}</h4>
 
-
-                                {% for k in i.options %}
-                                    <div>
-
-                                        <span class="glyphicon glyphicon-unchecked"></span>
-                                        <h4 style="display:inline-block;width: 80%;">{{ k }}</h4>
-                                    </div>
-                                {% endfor %}
+                                <div {% if i.ismustfill == '1' %}
+                                    name="mustFillMulti"
+                                {% endif %}>
+                                    {% for k in i.options %}
+                                        <div class="checkbox">
+                                            <label style="font-size: 15px;font-weight: bold;"><input type="checkbox"
+                                                                                                     name="multi"
+                                                                                                     value="{{ k }}">{{ k }}
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
 
 
                             </div>
@@ -98,15 +111,20 @@
                         <div class="panel panel-primary">
                             <div class="panel-heading">
                                 <h3 class="panel-title">
-                                    <text name='number'>x</text>
-                                    <text>.填空</text>
+                                    <text name='number'>{{ i.no }}</text>
+                                    <text name='type'>.填空</text>
+                                    <text>{% if i.ismustfill == '0' %}
+                                        (选填)
+                                    {% endif %}</text>
 
                                 </h3>
                             </div>
                             <div class="panel-body">
                                 <h4>{{ i.questionName }}</h4>
 
-                                <div>
+                                <div {% if i.ismustfill == '1' %}
+                                    name="mustFillBlank"
+                                {% endif %}>
                                     <input type="text" class="form-control"/>
                                 </div>
 
@@ -120,6 +138,106 @@
 
         {% endfor %}
     </div>
+    <div>
+        <div class="row" style="text-align: center;">
+            <button type="button" class="btn btn-primary col-xs-4 col-xs-offset-4" onclick="submitPaper()">提交</button>
+        </div>
+    </div>
 </div>
 </body>
+<script>
+    $(function () {
+        $(":checkbox[name='single']").click(function () {
+            if ($(this).attr("checked")) {
+                $(this).attr("checked", false);
+                return;
+            }
+            $(this).attr("checked", true);
+            $(this).parent().parent().siblings().find("label").find("input").attr("checked", false); //设置当前选中的checkbox同级(兄弟级)其他checkbox状态为未选中
+
+        });
+        $(":checkbox[name='multi']").click(function () {
+            if ($(this).attr("checked")) {
+                $(this).attr("checked", false);
+                return;
+            }
+            $(this).attr("checked", true);
+            {#$(this).parent().parent().siblings().find("label").find("input").attr("checked", false); //设置当前选中的checkbox同级(兄弟级)其他checkbox状态为未选中#}
+
+        });
+    });
+
+    function submitPaper() {
+        if (checkMustFill("mustFillSingle") && checkMustFill("mustFillMulti") && checkMustFillBlank()) {
+            postPaper()
+        } else {
+            alert("题目未答完, 请检查")
+        }
+    }
+
+    function checkMustFill(name) {
+        var flag = true
+        $("div[name=" + name + "]").each(function () {
+            if ($(this).find("div").find("label").find("input[checked='checked']").length == 0) {
+                flag = false
+            }
+        })
+        return flag
+    }
+
+    function checkMustFillBlank() {
+        var flag = true
+        $("div[name='mustFillBlank']").each(function () {
+            if ($(this).find('input').val() == null || $(this).find('input').val() == '') {
+                flag = false
+            }
+        })
+        return flag
+    }
+
+    function postPaper() {
+        var answer = []
+        console.log(answer)
+        $(".panel-heading").each(function () {
+            var select = []
+            switch ($(this).find("text[name='type']").text()) {
+                case ".单选":
+                    select[0] = $(this).next().find("input[checked='checked']").val()
+                    answer[answer.length] = select
+                    break
+                case ".多选":
+                    $(this).next().find("input[checked='checked']").each(function () {
+                        select[select.length] = $(this).val()
+                    })
+                    answer[answer.length] = select
+                    break
+                case ".填空":
+                    answer[answer.length] = [$(this).next().find("input").val()]
+                    break
+            }
+        })
+        console.log(answer)
+        $.ajax({
+            url: '/answer/',
+            type: 'post',
+            dataType: 'json',
+            traditional: true,//这个参数必须添加，采用传统方式转换
+            data: {paperId: {{  paperId}}, answer: JSON.stringify(answer)},
+            success: function (result) {
+                if (result.resultCode == 0) {
+                    alert("提交成功")
+                    window.location.href="/answerSuccess/"
+                } else {
+                    alert("提交失败,请联系管理员")
+                }
+            }
+        });
+    }
+
+    function closePageForm() {
+        window.opener = null;
+        window.open('', '_self');
+        window.close();
+    }
+</script>
 </html>

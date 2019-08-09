@@ -243,10 +243,10 @@ def releasePaperAction(request):
         if adict['userId'] == request.session.get("userID"):
             releasePaperFunction(adict['paperId'])
             return JsonResponse({'resultCode': 0})
-        JsonResponse({'resultCode': 1})
+        return JsonResponse({'resultCode': 1})
     except Exception as err:
         print(err)
-        JsonResponse({'resultCode': 1})
+        return JsonResponse({'resultCode': 1})
 
 def releasePaperFunction(paperId):
     Paper_obj = Paper.objects.get(id=paperId)
@@ -263,5 +263,20 @@ def paperView(request,m):
     paper_obj=Paper.objects.get(url=m)
     return render(request,"paper.html",getModifyQuestion({"paperId":paper_obj.id}))
 
+def answer(request):
+    try:
+        paper_obj=Paper.objects.get(id=request.POST.get('paperId'))
+        questions_obj=Question.objects.filter(pid=paper_obj)
+        questions_obj
+        for i,j in zip(json.loads(request.POST.get('answer')),questions_obj):
+            for k in i:
+                answer_obj=Answer(content=k,qid=j,pid=paper_obj)
+                answer_obj.save()
+    except:
+        return JsonResponse({'resultCode': 1})
 
+    return JsonResponse({'resultCode': 0})
+
+def anserSuccessView(request):
+    return render(request,"success.html")
 
