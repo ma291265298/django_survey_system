@@ -11,8 +11,8 @@ from django.db import models
 class Answer(models.Model):
     content = models.CharField(max_length=255, blank=True, null=True)
     identify = models.CharField(max_length=20, blank=True, null=True)
-    qid = models.ForeignKey('Question', models.DO_NOTHING, db_column='qid', blank=True, null=True)
-    pid = models.ForeignKey('Paper', models.DO_NOTHING, db_column='pid', blank=True, null=True)
+    qid = models.ForeignKey('Question', on_delete=models.CASCADE, db_column='qid', blank=True, null=True)
+    pid = models.ForeignKey('Paper', on_delete=models.CASCADE, db_column='pid', blank=True, null=True)
 
     class Meta:
         managed = False

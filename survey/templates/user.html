@@ -65,7 +65,7 @@
 
 <div class="container-fluid" id="container">
     <div class="row">
-        {% for i,j,k,l,m,n in papers reversed%}
+        {% for i,j,k,l,m,n,o in papers reversed%}
             <div class="card bg-light col-md-6" style="margin-bottom: 10px; box-shadow: lightgray 0px 3px 5px 0px ;">
                 <div class="card-body">
                     <div class="container-fluid">
@@ -87,7 +87,7 @@
                             </div>
                             <div class="col-3" style="text-align: center;">
 
-                                <h3>0</h3>
+                                <h3>{{ o }}</h3>
                                 <h6 style="font-size:15px;">答卷人数</h6>
                             </div>
                         </div>
@@ -108,7 +108,7 @@
                             <button type="button" class="btn btn-outline-primary" disabled="disabled">编辑</button>
                             <button type="button" class="btn btn-outline-primary" onclick="share('{{ i.url }}')">分享
                             </button>
-                            <button type="button" class="btn btn-outline-primary">统计</button>
+                            <button type="button" class="btn btn-outline-primary" onclick="location.href='/summary/{{ m }}'">统计</button>
 
                         {% endif %}
                     </div>

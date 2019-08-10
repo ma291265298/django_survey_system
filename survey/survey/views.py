@@ -172,9 +172,15 @@ def userView(request):
                     rsaCrypto(cdict,secondPublicKey),
                     rsaCrypto(ddict,secondPublicKey),
                     rsaCrypto(edict,secondPublicKey),
+                    getAnswerPeople(i.id)
                     ))
     return render(request, "user.html",{"papers":rsa})
 
+def getAnswerPeople(id):
+    Answer_obj=Answer.objects.filter(pid__id=id)
+    if len(Answer_obj) != 0:
+        return Answer_obj.filter(qid=Answer_obj[0].qid).count()
+    return 0
 @loginCheck
 def modifyView(request,m):
     f = open('second_private_key.txt', 'r', encoding='utf-8')
@@ -279,4 +285,39 @@ def answer(request):
 
 def anserSuccessView(request):
     return render(request,"success.html")
+
+@loginCheck
+def summaryView(request,m):
+    f = open('second_private_key.txt', 'r', encoding='utf-8')
+    secondPrivateKey = f.read()
+    f.close()
+    try:
+        adict = rsaDecrypt(m, secondPrivateKey)
+        if not adict['whoisyourdaddy'] == 'sb113':
+            return render(request, "404.html")
+        if adict['userId'] == request.session.get("userID"):
+            return render(request, "summary.html",getSummaryFunction(adict['paperId']))
+        return render(request, "404.html")
+    except Exception as err:
+        print(err)
+        return render(request, "404.html")
+
+def getSummaryFunction(id):
+    summary=[]
+    question_obj=Question.objects.filter(pid__id=id)
+    for i in question_obj:
+        adict = {}
+        adict['st']=urlGenerator()
+        adict['questionName'] = i.content
+        adict['type'] = i.type
+        if i.type=='单选' or i.type=='多选':
+            adict['option']=json.dumps([j.content for j in Option.objects.filter(qid=i)],ensure_ascii=False)
+            adict['number']=json.dumps([Answer.objects.filter(content=j.content).filter(qid=i).count() for j in Option.objects.filter(qid=i)],ensure_ascii=False)
+        if i.type=='自由':
+            adict['content']=json.dumps([j.content for j in Answer.objects.filter(qid=i)],ensure_ascii=False)
+            adict['length'] = len(adict['content'])
+            if adict['content']=='[]' or adict['content']=='[null]':
+                adict['length']=0
+        summary.append(adict)
+    return {"answer":summary}
 

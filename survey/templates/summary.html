@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>统计</title>
+
+</head>
+<body>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.bootcss.com/clipboard.js/1.7.1/clipboard.min.js"></script>
+<!-- 新 Bootstrap4 核心 CSS 文件 -->
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
+
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- popper.min.js 用于弹窗、提示、下拉菜单 -->
+<script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
+
+<!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
+
+<script>
+
+    var table = {}
+    $(function () {
+
+        {% for i in answer %}
+            {% if i.type == '自由' %}
+                table['{{ i.st }}'] = {{ i.content|safe }}
+                    pageTo('{{ i.st }}', 1)
+            {% endif %}
+        {% endfor %}
+    })
+
+    function pageTo(questionId, page) {
+        var info = table[questionId]
+        $("#" + questionId).html("")
+        for (var j = (page - 1) * 4, len = 4 + (page - 1) * 4; j < info.length && j < len; j++) {
+            $("#" + questionId).append(' <tr>\n' +
+                '<td style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">\n' +
+                info[j] +
+                '</td>\n' +
+                '</tr>')
+        }
+        setPageNumber(questionId, page)
+    }
+
+    function setPageNumber(questionId, page) {
+        var startPage = Math.floor(page - (page - 1) % 3)
+        var allPageNumber = Math.ceil(table[questionId].length / 4)
+        $("#foot" + questionId).html("")
+        $("#foot" + questionId).append('<li class="page-item"><a class="page-link"  onclick="pageTo(' + "'" + questionId + "'" + ',' + (page - 1) + ')">Previous</a></li>\n')
+        for (var i = startPage; i < 3 + startPage && i <= allPageNumber; i++) {
+            $("#foot" + questionId).append('<li class="page-item"><a class="page-link" onclick="pageTo(' + "'" + questionId + "'" + ',' + i + ')">' + i + '</a></li>\n')
+        }
+        $("#foot" + questionId).append('<li class="page-item"><a class="page-link" onclick="pageTo(' + "'" + questionId + "'" + ',' + (page + 1) + ')">Next</a></li>')
+        var test = $("#foot" + questionId).find('li')[(page - 1) % 3 + 1]
+        if ($(test).text() == 1) {
+            $(test).prev().addClass('disabled')
+        }
+        if ($(test).text() == allPageNumber) {
+            $(test).next().addClass('disabled')
+        }
+        $(test).addClass('active')
+
+    }
+
+</script>
+<div class="container-fluid">
+    <div class="row">
+        {% for i in answer %}
+            {% if i.type != '自由' %}
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3"
+                     style="width: 30%;margin-bottom: 10px; box-shadow: lightgray 3px 3px 3px ;">
+                    <canvas id="{{ i.st }}" width="400" height="400"></canvas>
+                </div>
+            {% else %}
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3"
+                     style="width: 30%;margin-bottom: 10px; box-shadow: lightgray 3px 3px 3px ;">
+                    <div class="container-fluid">
+                        <div class="row">
+
+                            <table class="table" style="table-layout:fixed;">
+                                <thead>
+                                <tr>
+                                    <th>{{ i.questionName }}</th>
+                                </tr>
+                                </thead>
+
+
+                                {% if i.length != 0 %}
+                                <tbody id="{{ i.st }}"></tbody>
+
+                            </table>
+
+
+                            <div class="container">
+                                <ul class="pagination" id="foot{{ i.st }}">
+
+                                </ul>
+                            </div>
+                                    {% else %}
+                                    <tbody></tbody>
+                            </table>
+                                    空空如也
+                                    {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+</body>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
+<script>
+    var colorList = ['rgba(255, 99, 132, ',
+        'rgba(54, 162, 235, ',
+        'rgba(255, 206, 86, ',
+        'rgba(75, 192, 192, ',
+        'rgba(153, 102, 255, ',
+        'rgba(255, 159, 64, ']
+
+
+    function option(head, optionList, dataList, colorNum) {
+        var op = {
+            type: 'bar',
+            data: {
+                labels: optionList,
+                datasets: [{
+                    label: '人数',
+                    data: dataList,
+                    borderColor: colorList[colorNum] + '1)',
+                    borderWidth: 1,
+                    backgroundColor: colorList[colorNum] + '0.3)'
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                },
+                title: {
+                    display: true,
+                    text: head,
+                    fontSize: 15
+                }
+            }
+        }
+        return op
+    }
+
+    function initTable() {
+
+    }
+
+    {% for i in answer %}
+        {% if i.type != '自由' %}
+            var ctx = document.getElementById('{{ i.st }}').getContext('2d');
+            var myChart = new Chart(ctx, option('{{ i.questionName|safe }}', {{ i.option|safe}}, {{ i.number|safe}}, {{ forloop.counter0 }} % 6)
+            );
+        {% endif %}
+    {% endfor %}
+</script>
+</html>

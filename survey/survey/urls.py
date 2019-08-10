@@ -35,6 +35,7 @@ urlpatterns = [
     re_path(r'^a/AkdjrEkclaoq/(.*)', views.secondRegister),
     re_path(r'^modify/(.*)', views.modifyView),
     re_path(r'^paper/(.*)', views.paperView),
+    re_path(r'^summary/(.*)', views.summaryView),
     re_path(r'^.*', views.erro),
     #re_path(r'/*',views.erro),
 ]
