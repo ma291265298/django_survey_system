@@ -34,6 +34,7 @@ class checkSensitiveThread (threading.Thread):
         print ("退出线程")
 
 def checkSensitiveAI(paper_obj):
+    time.sleep(3)
     message=checkSensitiveFunction(paper_obj)
     if message is True:
         paper_obj.verify='未发布'
