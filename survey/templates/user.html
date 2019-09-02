@@ -65,7 +65,7 @@
 
 <div class="container-fluid" id="container">
     <div class="row">
-        {% for i,j,k,l,m,n,o in papers reversed%}
+        {% for i,j,k,l,m,n,o,p in papers reversed%}
             <div class="card bg-light col-md-6" style="margin-bottom: 10px; box-shadow: lightgray 0px 3px 5px 0px ;">
                 <div class="card-body">
                     <div class="container-fluid">
@@ -103,18 +103,48 @@
                             </button>
                             <button type="button" class="btn btn-outline-primary" disabled="disabled">分享</button>
                             <button type="button" class="btn btn-outline-primary" disabled="disabled">统计</button>
-                        {% else %}
+                            <button type="button" class="btn btn-outline-danger" disabled="disabled">停止</button>
+                        {% elif i.verify == '已发布' %}
                             <button type="button" class="btn btn-outline-primary" disabled="disabled">发布</button>
                             <button type="button" class="btn btn-outline-primary" disabled="disabled">编辑</button>
                             <button type="button" class="btn btn-outline-primary" onclick="share('{{ i.url }}')">分享
                             </button>
                             <button type="button" class="btn btn-outline-primary" onclick="location.href='/summary/{{ m }}'">统计</button>
+                            <button type="button" class="btn btn-outline-danger" onclick="stopPaper('{{ p }}')">停止</button>
+                         {% elif i.verify == 'AI审核中' %}
+                            <button type="button" class="btn btn-outline-primary" disabled="disabled">发布</button>
+                            <button type="button" class="btn btn-outline-primary" disabled="disabled">编辑</button>
+                            <button type="button" class="btn btn-outline-primary" disabled="disabled">分享
+                            </button>
+                            <button type="button" class="btn btn-outline-primary" disabled="disabled">统计</button>
+                            <button type="button" class="btn btn-outline-danger" disabled="disabled">停止</button>
+                        {% elif i.verify == '已停止' %}
+                            <button type="button" class="btn btn-outline-primary" disabled="disabled">发布</button>
+                            <button type="button" class="btn btn-outline-primary" disabled="disabled">编辑</button>
+                            <button type="button" class="btn btn-outline-primary" onclick="share('{{ i.url }}')">分享
+                            </button>
+                            <button type="button" class="btn btn-outline-primary" onclick="location.href='/summary/{{ m }}'">统计</button>
+                            <button type="button" class="btn btn-outline-danger" disabled="disabled">停止</button>
+                         {% else %}
+                            <button type="button" class="btn btn-outline-primary" disabled="disabled">发布</button>
+                            <button type="button" class="btn btn-outline-primary"
+                                    onclick="location.href='/modify/{{ k }}'">编辑</button>
+                            <button type="button" class="btn btn-outline-primary" disabled="disabled">分享
+                            </button>
+                            <button type="button" class="btn btn-outline-primary" disabled="disabled">统计</button>
+                            <button type="button" class="btn btn-outline-danger" disabled="disabled">停止</button>
 
                         {% endif %}
                     </div>
+{#                {% if i.verify != 'AI审核中' %}#}
                     <button type="button" class="btn btn-outline-danger btn-sm" onclick="deletePaper('{{ n }}')"
                             style="float: right;">删除
                     </button>
+{#                    {% else %}#}
+{#                    <button type="button" class="btn btn-outline-danger btn-sm" disabled="disabled"#}
+{#                            style="float: right;">删除#}
+{#                    </button>#}
+{#                {% endif %}#}
                 </div>
             </div>
         {% endfor %}
@@ -172,6 +202,24 @@
         });
     }
 
+        function stopPaper(id) {
+        $.ajax({
+            url: '/stopPaper/',
+            type: 'post',
+            dataType: 'json',
+            traditional: true,//这个参数必须添加，采用传统方式转换
+            data: {raw: id},
+            success: function (result) {
+                if (result.resultCode == 0) {
+                    alert("成功")
+                    window.location.href = "/user/"
+                } else {
+                    alert("失败")
+                }
+            }
+        });
+    }
+
     function releasePaper(id) {
         $.ajax({
             url: '/releasePaper/',
@@ -191,8 +239,8 @@
     }
 
     function share(url) {
-        $("#url").val('http://127.0.0.1/paper/' + url)
-        $("#btn").attr('data-clipboard-text', 'http://127.0.0.1/paper/' + url)
+        $("#url").val('http://47.100.167.60/paper/' + url)
+        $("#btn").attr('data-clipboard-text', 'http://47.100.167.60/paper/' + url)
         $("#myModal").modal("show")
     }
 
