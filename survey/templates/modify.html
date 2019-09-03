@@ -295,6 +295,7 @@
             }
         }
 
+
         function addSingleOption(obj) {
             $(obj).before('<div>\
 								<button style="margin-top: 5px;" type="button" class="close" aria-hidden="true" onclick="removeOption(this)">&times;</button>\
@@ -482,7 +483,7 @@
                                 </h3>
                             </div>
                             <div class="panel-body">
-                                <h4 contenteditable="true" onblur="checkBlur(this);">{{ i.questionName }}</h4>
+                                <h4 contenteditable="true" onfocus="checkFocus(this)" onblur="checkBlur(this);">{{ i.questionName }}</h4>
 
                                 {% for k in i.options %}
                                     <div>

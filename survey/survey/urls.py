@@ -29,6 +29,7 @@ urlpatterns = [
     path('loginAction/', views.loginAction),
     path('user/', views.userView),
     path('deletePaper/',views.deleteAction),
+    path('stopPaper/',views.stopAction),
     path('modifySuccess/',views.saveModifyAction),
     path('releasePaper/',views.releasePaperAction),
     path('answer/',views.answer),

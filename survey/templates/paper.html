@@ -199,7 +199,7 @@
         var answer = []
         console.log(answer)
         $(".panel-heading").each(function () {
-            var select = [null]
+            var select = []
             switch ($(this).find("text[name='type']").text()) {
                 case ".单选":
                     select[0] = $(this).next().find("input[checked='checked']").val()
